@@ -20,8 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 
 @Composable
 fun EmojiScreen(viewModel: HomeScreenViewModel) {
@@ -40,15 +43,23 @@ fun EmojiScreen(viewModel: HomeScreenViewModel) {
         ) {
             Text(text = "Get Emojis")
         }
+
         AnimatedVisibility(emojis.isNotEmpty()) {
             LazyColumn {
                 items(emojis) { emoji ->
+
+                    val imageRequest = ImageRequest.Builder(LocalContext.current)
+                        .data(emoji.url)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .crossfade(true)
+                        .build()
+
                     Row(
                         modifier = Modifier.fillMaxWidth()
                             .padding(8.dp)
                     ){
                         AsyncImage(
-                            model = emoji.url,
+                            model = imageRequest,
                             contentDescription = null,
                             contentScale = ContentScale.FillBounds,
                             modifier = Modifier.size(40.dp)

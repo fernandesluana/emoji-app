@@ -20,3 +20,12 @@ fun mapToEmojiEntityList(emojis: List<Emoji>): List<EmojiEntity> {
         )
     }
 }
+
+fun entityToEmojiList(emojiEntities: List<EmojiEntity>): List<Emoji> {
+    return emojiEntities.map { emojiEntity ->
+        Emoji(
+            name = emojiEntity.name,
+            url = emojiEntity.url
+        )
+    }
+}

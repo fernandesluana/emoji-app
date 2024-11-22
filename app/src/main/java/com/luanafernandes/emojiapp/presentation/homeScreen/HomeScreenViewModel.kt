@@ -23,6 +23,7 @@ class HomeScreenViewModel @Inject constructor(
             try {
                 val result = repository.getAllEmojis()
                 _emojis.value = result
+                println("Emojis: $result")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
