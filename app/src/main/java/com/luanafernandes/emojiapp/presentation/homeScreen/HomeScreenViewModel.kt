@@ -26,6 +26,7 @@ class HomeScreenViewModel @Inject constructor(
                 println("Emojis: $result")
             } catch (e: Exception) {
                 e.printStackTrace()
+                println("Error fetching emojis: ${e.message}")
             }
         }
     }

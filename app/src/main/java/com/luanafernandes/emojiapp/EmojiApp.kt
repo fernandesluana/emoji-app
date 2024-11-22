@@ -24,8 +24,8 @@ class EmojiApp: Application(), ImageLoaderFactory {
                     .maxSizeBytes(5 * 1024 * 1024)
                     .build()
             }
-            .logger(DebugLogger())
             .respectCacheHeaders(false)
+            .logger(DebugLogger())
             .build()
     }
 
