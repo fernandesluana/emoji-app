@@ -18,7 +18,12 @@ class HomeScreenViewModel @Inject constructor(
     private val _emojis = MutableStateFlow<List<Emoji>>(emptyList())
     val emojis: StateFlow<List<Emoji>> get() = _emojis
 
-    fun fetchEmojis() {
+    init {
+        fetchEmojis()
+    }
+
+    private fun fetchEmojis() {
+        println("Fetching emojis...")
         viewModelScope.launch {
             try {
                 val result = repository.getAllEmojis()

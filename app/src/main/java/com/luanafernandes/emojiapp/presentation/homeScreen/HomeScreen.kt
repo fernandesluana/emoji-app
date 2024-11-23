@@ -28,13 +28,11 @@ import coil.request.ImageRequest
 import com.luanafernandes.emojiapp.data.remote.dto.Emoji
 
 @Composable
-fun EmojiScreen(viewModel: HomeScreenViewModel) {
-    val emojis by viewModel.emojis.collectAsState()
+fun HomeScreen(
+    emojis: List<Emoji>,
+    onEmojiListClick: () -> Unit
+) {
     var randomEmoji by remember { mutableStateOf<Emoji?>(null) }
-
-    LaunchedEffect(Unit) {
-        viewModel.fetchEmojis()
-    }
 
     Column(
         modifier = Modifier
@@ -80,7 +78,13 @@ fun EmojiScreen(viewModel: HomeScreenViewModel) {
             },
             modifier = Modifier.padding(20.dp)
         ) {
-            Text(text = "Get Emojis")
+            Text(text = "Random Emoji")
+        }
+        Button(
+            onClick = {onEmojiListClick()},
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text(text = "Emoji List")
         }
 
     }
