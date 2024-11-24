@@ -23,9 +23,6 @@ fun NavGraphSetup(
         startDestination = Routes.HomeScreen
     ) {
         composable<Routes.HomeScreen> {
-
-
-
             HomeScreen(
                 onEmojiListClick = {
                     navController.navigate(Routes.EmojiListScreen)
@@ -38,9 +35,24 @@ fun NavGraphSetup(
                 onBackClick = {
                     navController.navigateUp()
                 },
-                emojis = emojis
+                emojis = emojis,
+                onEmojiRemoved = { emoji ->
+                    homeViewModel.removeEmojiFromList(emoji)
+                },
+                onRefreshEmojis = {
+                    homeViewModel.fetchEmojis()
+                }
             )
         }
 
     }
 }
+
+
+
+
+
+
+
+
+

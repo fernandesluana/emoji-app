@@ -50,7 +50,10 @@ fun HomeScreen(
             randomEmoji?.let { emoji ->
                 val imageRequest = ImageRequest.Builder(LocalContext.current)
                     .data(emoji.url)
+                    .memoryCacheKey(emoji.url)
+                    .diskCacheKey(emoji.url)
                     .memoryCachePolicy(CachePolicy.ENABLED)
+                    .diskCachePolicy(CachePolicy.ENABLED)
                     .crossfade(true)
                     .build()
 

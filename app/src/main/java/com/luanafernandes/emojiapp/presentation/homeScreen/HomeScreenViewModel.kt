@@ -22,7 +22,7 @@ class HomeScreenViewModel @Inject constructor(
         fetchEmojis()
     }
 
-    private fun fetchEmojis() {
+    fun fetchEmojis() {
         println("Fetching emojis...")
         viewModelScope.launch {
             try {
@@ -35,4 +35,10 @@ class HomeScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun removeEmojiFromList(emoji: Emoji) {
+        _emojis.value = _emojis.value.filterNot { it == emoji }
+    }
+
+
 }
