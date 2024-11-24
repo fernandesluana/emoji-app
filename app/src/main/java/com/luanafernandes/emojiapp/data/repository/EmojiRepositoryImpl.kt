@@ -70,5 +70,16 @@ class EmojiRepositoryImpl(
         }
     }
 
+    override suspend fun deleteUser(username: String) {
+        try {
+            val user = userDao.getUserByLogin(username)
+            if (user != null) {
+                userDao.deleteUser(username)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
 }

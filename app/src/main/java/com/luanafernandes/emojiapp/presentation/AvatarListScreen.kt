@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -24,8 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -38,6 +38,7 @@ import com.luanafernandes.emojiapp.domain.model.User
 fun AvatarListScreen(
     onBackClick: () -> Unit,
     users: List<User>,
+    onDeleteUser: (String) -> Unit
 ) {
 
     Column(
@@ -61,7 +62,8 @@ fun AvatarListScreen(
             ) {
                 items(users) { user ->
                     AvatarItem(
-                        user = user
+                        user = user,
+                        onDeleteClick = { onDeleteUser(user.login) }
                     )
                 }
             }
@@ -76,7 +78,10 @@ fun AvatarListScreen(
 }
 
 @Composable
-fun AvatarItem(user: User) {
+fun AvatarItem(
+    user: User,
+    onDeleteClick: () -> Unit
+) {
     val context = LocalContext.current
 
     val imageRequest = ImageRequest.Builder(context)
@@ -91,8 +96,9 @@ fun AvatarItem(user: User) {
     Card(
         modifier = Modifier
             .padding(8.dp)
+            .fillMaxSize()
             .border(3.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
-            .clickable {}
+            .clickable {onDeleteClick()}
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(5.dp)

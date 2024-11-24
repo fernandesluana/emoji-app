@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val repository: EmojiRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _emojis = MutableStateFlow<List<Emoji>>(emptyList())
     val emojis: StateFlow<List<Emoji>> get() = _emojis
@@ -60,7 +60,7 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    private fun fetchUsers() {
+    fun fetchUsers() {
         viewModelScope.launch {
             try {
                 val usersFromDb = repository.getAllUsers()
@@ -68,6 +68,18 @@ class HomeScreenViewModel @Inject constructor(
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun deleteUser(username: String) {
+        viewModelScope.launch {
+            try {
+                repository.deleteUser(username)
+                _users.value = _users.value.filterNot { it.login == username }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
         }
     }
 

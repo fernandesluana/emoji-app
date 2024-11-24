@@ -1,6 +1,7 @@
 package com.luanafernandes.emojiapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,9 +57,17 @@ fun NavGraphSetup(
             )
         }
         composable<Routes.AvatarListScreen> {
+
+            LaunchedEffect(Unit) {
+                homeViewModel.fetchUsers()
+            }
+
             AvatarListScreen(
+                onBackClick = {},
                 users = users,
-                onBackClick = {}
+                onDeleteUser = { username ->
+                    homeViewModel.deleteUser(username)
+                }
             )
         }
     }

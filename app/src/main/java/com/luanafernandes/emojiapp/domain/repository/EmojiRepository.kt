@@ -10,4 +10,6 @@ interface EmojiRepository {
     suspend fun getUser(username: String): User?
 
     suspend fun getAllUsers(): List<User>
+
+    suspend fun deleteUser(username: String)
 }
