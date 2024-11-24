@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.luanafernandes.emojiapp.presentation.AvatarListScreen
 import com.luanafernandes.emojiapp.presentation.emojiListScreen.EmojiListScreen
 import com.luanafernandes.emojiapp.presentation.homeScreen.HomeScreen
 import com.luanafernandes.emojiapp.presentation.homeScreen.HomeScreenViewModel
@@ -18,6 +19,7 @@ fun NavGraphSetup(
     val homeViewModel: HomeScreenViewModel = hiltViewModel()
     val emojis by homeViewModel.emojis.collectAsState()
     val user by homeViewModel.user.collectAsState()
+    val users by homeViewModel.users.collectAsState()
 
     NavHost(
         navController = navController,
@@ -32,7 +34,11 @@ fun NavGraphSetup(
                 onSearchClick = {username ->
                     homeViewModel.fetchUser(username = username)
                 },
-                user = user
+                user = user,
+                onAvatarListClick = {
+                    navController.navigate(Routes.AvatarListScreen)
+                }
+
             )
         }
         composable<Routes.EmojiListScreen> {
@@ -47,6 +53,12 @@ fun NavGraphSetup(
                 onRefreshEmojis = {
                     homeViewModel.fetchEmojis()
                 }
+            )
+        }
+        composable<Routes.AvatarListScreen> {
+            AvatarListScreen(
+                users = users,
+                onBackClick = {}
             )
         }
     }

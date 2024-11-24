@@ -61,4 +61,14 @@ class EmojiRepositoryImpl(
         }
 
     }
+
+    override suspend fun getAllUsers(): List<User> {
+        val cachedUsers = userDao.getAllUsers()
+
+        return cachedUsers.map { userEntity ->
+            userEntityToUser(userEntity)
+        }
+    }
+
+
 }

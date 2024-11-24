@@ -2,7 +2,6 @@ package com.luanafernandes.emojiapp.presentation.homeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
 import com.luanafernandes.emojiapp.domain.model.Emoji
 import com.luanafernandes.emojiapp.domain.model.User
 import com.luanafernandes.emojiapp.domain.repository.EmojiRepository
@@ -23,8 +22,12 @@ class HomeScreenViewModel @Inject constructor(
     private val _user = MutableStateFlow<User?>(null)
     val user: StateFlow<User?> = _user
 
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> get() = _users
+
     init {
         fetchEmojis()
+        fetchUsers()
     }
 
     fun fetchEmojis() {
@@ -53,6 +56,17 @@ class HomeScreenViewModel @Inject constructor(
             } catch (e: Exception) {
                 e.printStackTrace()
                 println("Error fetching user: ${e.message}")
+            }
+        }
+    }
+
+    private fun fetchUsers() {
+        viewModelScope.launch {
+            try {
+                val usersFromDb = repository.getAllUsers()
+                _users.value = usersFromDb
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

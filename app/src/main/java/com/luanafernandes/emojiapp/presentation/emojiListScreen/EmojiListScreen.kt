@@ -1,13 +1,13 @@
 package com.luanafernandes.emojiapp.presentation.emojiListScreen
 
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -27,7 +27,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -36,7 +35,6 @@ import coil.imageLoader
 import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
 import com.luanafernandes.emojiapp.domain.model.Emoji
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -72,13 +70,20 @@ val onRefresh: () -> Unit = {
         state = state
     ) {
         if (emojis.isNotEmpty()) {
-            EmojiGrid(
-                emojis = emojis,
-                modifier = Modifier.fillMaxSize(),
-                onEmojiClick = { emoji ->
-                    onEmojiRemoved(emoji)
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 60.dp),
+                columns = GridCells.Fixed(4),
+                contentPadding = PaddingValues(8.dp)
+            ) {
+                items(emojis) { emoji ->
+                    EmojiItem(
+                        emoji = emoji,
+                        onClick = { onEmojiRemoved(emoji) })
                 }
-            )
+            }
+
         } else {
             Text(
                 text = "No emojis available",
@@ -91,29 +96,9 @@ val onRefresh: () -> Unit = {
 }
 
 @Composable
-fun EmojiGrid(
-    emojis: List<Emoji>,
-    modifier: Modifier = Modifier,
-    onEmojiClick: (Emoji) -> Unit = {}
-) {
-    LazyVerticalGrid(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(top = 60.dp),
-        columns = GridCells.Fixed(4),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        items(emojis) { emoji ->
-            EmojiItem(
-                emoji = emoji,
-                onClick = { onEmojiClick(emoji) })
-        }
-    }
-}
-
-@Composable
 fun EmojiItem(
-    emoji: Emoji, onClick: () -> Unit
+    emoji: Emoji,
+    onClick: () -> Unit
 ) {
     val context = LocalContext.current
     val imageRequest = ImageRequest.Builder(context)
@@ -129,6 +114,7 @@ fun EmojiItem(
     Card(
         modifier = Modifier
             .padding(8.dp)
+            .border(3.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
             .clickable {
 
                 context.imageLoader.memoryCache?.remove(memoryCacheKey)
@@ -141,15 +127,15 @@ fun EmojiItem(
         elevation = CardDefaults.cardElevation(5.dp)
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
                 model = imageRequest,
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-                modifier = Modifier.size(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+                    .padding(3.dp)
             )
         }
     }

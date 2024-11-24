@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
 import com.luanafernandes.emojiapp.domain.model.Emoji
 import com.luanafernandes.emojiapp.domain.model.User
 import com.luanafernandes.emojiapp.presentation.components.ImageCard
@@ -33,7 +32,8 @@ fun HomeScreen(
     emojis: List<Emoji>,
     onEmojiListClick: () -> Unit,
     onSearchClick: (String) -> Unit,
-    user: User?
+    user: User?,
+    onAvatarListClick: () -> Unit
 ) {
     var randomEmoji by remember { mutableStateOf<Emoji?>(null) }
     var username by remember { mutableStateOf("") }
@@ -79,6 +79,13 @@ fun HomeScreen(
             modifier = Modifier.padding(20.dp)
         ) {
             Text(text = "Emoji List")
+        }
+
+        Button(
+            onClick = { onAvatarListClick() },
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text(text = "Avatar List")
         }
 
         Row(
