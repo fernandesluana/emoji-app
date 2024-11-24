@@ -15,8 +15,9 @@ import com.luanafernandes.emojiapp.presentation.homeScreen.HomeScreenViewModel
 fun NavGraphSetup(
     navController: NavHostController
 ) {
-    val homeViewModel : HomeScreenViewModel = hiltViewModel()
+    val homeViewModel: HomeScreenViewModel = hiltViewModel()
     val emojis by homeViewModel.emojis.collectAsState()
+    val user by homeViewModel.user.collectAsState()
 
     NavHost(
         navController = navController,
@@ -24,10 +25,14 @@ fun NavGraphSetup(
     ) {
         composable<Routes.HomeScreen> {
             HomeScreen(
+                emojis = emojis,
                 onEmojiListClick = {
                     navController.navigate(Routes.EmojiListScreen)
                 },
-                emojis = emojis
+                onSearchClick = {username ->
+                    homeViewModel.fetchUser(username = username)
+                },
+                user = user
             )
         }
         composable<Routes.EmojiListScreen> {
@@ -44,7 +49,6 @@ fun NavGraphSetup(
                 }
             )
         }
-
     }
 }
 

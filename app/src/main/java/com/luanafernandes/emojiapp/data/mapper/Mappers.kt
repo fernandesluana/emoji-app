@@ -1,18 +1,24 @@
 package com.luanafernandes.emojiapp.data.mapper
 
 import com.luanafernandes.emojiapp.data.local.EmojiEntity
-import com.luanafernandes.emojiapp.data.remote.dto.Emoji
+import com.luanafernandes.emojiapp.data.local.UserEntity
+import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
+import com.luanafernandes.emojiapp.data.remote.dto.UserDto
+import com.luanafernandes.emojiapp.domain.model.Emoji
+import com.luanafernandes.emojiapp.domain.model.User
 
-fun mapToEmojiList(emojiMap: Map<String, String>): List<Emoji> {
+//Emoji Mappers
+
+fun mapToEmojiList(emojiMap: Map<String, String>): List<EmojiDto> {
     return emojiMap.map { emoji ->
-        Emoji(
+        EmojiDto(
             name = emoji.key,
             url = emoji.value
         )
     }
 }
 
-fun mapToEmojiEntityList(emojis: List<Emoji>): List<EmojiEntity> {
+fun emojiDtoListToEmojiEntityList(emojis: List<EmojiDto>): List<EmojiEntity> {
     return emojis.map { emoji ->
         EmojiEntity(
             name = emoji.name,
@@ -21,11 +27,39 @@ fun mapToEmojiEntityList(emojis: List<Emoji>): List<EmojiEntity> {
     }
 }
 
-fun entityToEmojiList(emojiEntities: List<EmojiEntity>): List<Emoji> {
+fun emojiEntityListToEmojiList(emojiEntities: List<EmojiEntity>): List<Emoji> {
     return emojiEntities.map { emojiEntity ->
         Emoji(
             name = emojiEntity.name,
             url = emojiEntity.url
         )
     }
+}
+
+fun dtoListToEmojiList(emojiDtoList: List<EmojiDto>): List<Emoji> {
+    return emojiDtoList.map { emojiDto ->
+        Emoji(
+            name = emojiDto.name,
+            url = emojiDto.url
+        )
+    }
+
+}
+
+//User Mappers
+
+fun userDtoToUserEntity(userDto: UserDto): UserEntity {
+    return UserEntity(
+        login = userDto.login,
+        id = userDto.id,
+        avatarUrl = userDto.avatarUrl
+    )
+}
+
+fun userEntityToUser(userEntity: UserEntity) : User {
+    return User(
+        login = userEntity.login,
+        id = userEntity.id,
+        avatarUrl = userEntity.avatarUrl
+    )
 }

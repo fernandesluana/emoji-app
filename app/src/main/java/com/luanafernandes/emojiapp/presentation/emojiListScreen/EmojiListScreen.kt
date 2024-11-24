@@ -36,7 +36,8 @@ import coil.imageLoader
 import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-import com.luanafernandes.emojiapp.data.remote.dto.Emoji
+import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
+import com.luanafernandes.emojiapp.domain.model.Emoji
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
