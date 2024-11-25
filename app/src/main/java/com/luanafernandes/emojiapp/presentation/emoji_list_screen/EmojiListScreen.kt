@@ -1,8 +1,14 @@
 package com.luanafernandes.emojiapp.presentation.emoji_list_screen
 
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +18,22 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,49 +63,87 @@ fun EmojiListScreen(
     onRefreshEmojis: () -> Unit
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) } // Tracks initial loading state
     val coroutineScope = rememberCoroutineScope()
-
     val state = rememberPullToRefreshState()
 
-val onRefresh: () -> Unit = {
-    isRefreshing = true
-    coroutineScope.launch {
-        delay(2000)
-        onRefreshEmojis()
-        isRefreshing = false
+    // Simulate loading state for the first time the screen opens
+    LaunchedEffect(emojis) {
+        if (isLoading) {
+            delay(2000) // Simulate loading delay
+            isLoading = false
+        }
     }
-}
 
-    PullToRefreshBox(
-        modifier = Modifier
-            .fillMaxSize(),
-        isRefreshing = isRefreshing,
-        onRefresh = onRefresh,
-        state = state
-    ) {
-        if (emojis.isNotEmpty()) {
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 60.dp),
-                columns = GridCells.Fixed(4),
-                contentPadding = PaddingValues(8.dp)
-            ) {
-                items(emojis) { emoji ->
-                    EmojiItem(
-                        emoji = emoji,
-                        onClick = { onEmojiRemoved(emoji) })
+    val onRefresh: () -> Unit = {
+        isRefreshing = true
+        coroutineScope.launch {
+            delay(2000)
+            onRefreshEmojis()
+            isRefreshing = false
+        }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Emojis") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
                 }
-            }
-
-        } else {
-            Text(
-                text = "No emojis available",
-                modifier = Modifier.align(Alignment.Center),
-                style = MaterialTheme.typography.bodyMedium
             )
         }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            contentAlignment = Alignment.Center
+        ) {
+            AnimatedVisibility(visible = isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
+
+            AnimatedVisibility(
+                visible = !isLoading,
+                enter = fadeIn() + slideInVertically(),
+                exit = fadeOut() + slideOutVertically()
+            ) {
+                PullToRefreshBox(
+                    modifier = Modifier.fillMaxSize(),
+                    isRefreshing = isRefreshing,
+                    onRefresh = onRefresh,
+                    state = state,
+
+                ) {
+                    if (emojis.isNotEmpty()) {
+                        LazyVerticalGrid(
+                            modifier = Modifier.fillMaxSize(),
+                            columns = GridCells.Fixed(4),
+                            contentPadding = PaddingValues(8.dp)
+                        ) {
+                            items(emojis) { emoji ->
+                                EmojiItem(
+                                    emoji = emoji,
+                                    onClick = { onEmojiRemoved(emoji) }
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "No emojis available",
+                            modifier = Modifier.align(Alignment.Center),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -114,7 +166,6 @@ fun EmojiItem(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .border(3.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
             .clickable {
 
                 context.imageLoader.memoryCache?.remove(memoryCacheKey)
@@ -140,7 +191,4 @@ fun EmojiItem(
         }
     }
 }
-
-
-
 

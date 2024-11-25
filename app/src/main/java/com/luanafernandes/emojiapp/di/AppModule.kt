@@ -13,7 +13,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -23,7 +22,6 @@ import javax.inject.Singleton
 object AppModule {
 
     private const val BASE_URL = "https://api.github.com/"
-
 
     @Provides
     @Singleton
@@ -62,7 +60,6 @@ object AppModule {
             .fallbackToDestructiveMigration()
             .build()
     }
-
 
     @Provides
     @Singleton

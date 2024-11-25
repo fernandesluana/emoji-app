@@ -32,6 +32,7 @@ class AppViewModel @Inject constructor(
     init {
         fetchEmojis()
         fetchUsers()
+
     }
 
     fun fetchEmojis() {

@@ -67,7 +67,7 @@ fun NavGraphSetup(
             }
 
             AvatarListScreen(
-                onBackClick = {},
+                onBackClick = {navController.navigateUp()},
                 users = users,
                 onDeleteUser = { username ->
                     homeViewModel.deleteUser(username)
