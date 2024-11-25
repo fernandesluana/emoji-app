@@ -1,6 +1,9 @@
 package com.luanafernandes.emojiapp.data.repository
 
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.luanafernandes.emojiapp.data.local.EmojiDatabase
 import com.luanafernandes.emojiapp.data.mapper.dtoListToEmojiList
 import com.luanafernandes.emojiapp.data.mapper.emojiEntityListToEmojiList
@@ -8,15 +11,20 @@ import com.luanafernandes.emojiapp.data.mapper.emojiDtoListToEmojiEntityList
 import com.luanafernandes.emojiapp.data.mapper.mapToEmojiList
 import com.luanafernandes.emojiapp.data.mapper.userDtoToUserEntity
 import com.luanafernandes.emojiapp.data.mapper.userEntityToUser
+import com.luanafernandes.emojiapp.data.paging.RepoPagingSource
 import com.luanafernandes.emojiapp.data.remote.EmojiApiService
 import com.luanafernandes.emojiapp.domain.model.Emoji
+import com.luanafernandes.emojiapp.domain.model.GitHubRepo
 import com.luanafernandes.emojiapp.domain.model.User
 import com.luanafernandes.emojiapp.domain.repository.EmojiRepository
+import kotlinx.coroutines.flow.Flow
 
+
+private const val USERNAME = "google"
 
 class EmojiRepositoryImpl(
     private val api: EmojiApiService,
-    database: EmojiDatabase
+    private val database: EmojiDatabase
 ): EmojiRepository {
 
     private val emojiDao = database.emojiDao()
@@ -59,7 +67,6 @@ class EmojiRepositoryImpl(
             e.printStackTrace()
             null
         }
-
     }
 
     override suspend fun getAllUsers(): List<User> {
@@ -79,6 +86,15 @@ class EmojiRepositoryImpl(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun getUserRepos(): Flow<PagingData<GitHubRepo>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                RepoPagingSource(api, USERNAME)
+            }
+        ).flow
     }
 
 

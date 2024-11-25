@@ -1,18 +1,22 @@
-package com.luanafernandes.emojiapp.presentation.homeScreen
+package com.luanafernandes.emojiapp.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.luanafernandes.emojiapp.domain.model.Emoji
+import com.luanafernandes.emojiapp.domain.model.GitHubRepo
 import com.luanafernandes.emojiapp.domain.model.User
 import com.luanafernandes.emojiapp.domain.repository.EmojiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(
+class AppViewModel @Inject constructor(
     private val repository: EmojiRepository
 ) : ViewModel() {
 
@@ -83,5 +87,7 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
+    val repos: Flow<PagingData<GitHubRepo>> = repository.getUserRepos()
+        .cachedIn(viewModelScope)
 
 }

@@ -11,5 +11,5 @@ sealed class Routes {
     @Serializable
     data object AvatarListScreen : Routes()
     @Serializable
-    data object GoogleReposScreen : Routes()
+    data object RepoListScreen : Routes()
 }

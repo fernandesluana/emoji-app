@@ -1,4 +1,4 @@
-package com.luanafernandes.emojiapp.presentation.emojiListScreen
+package com.luanafernandes.emojiapp.presentation.emoji_list_screen
 
 
 import androidx.compose.foundation.border

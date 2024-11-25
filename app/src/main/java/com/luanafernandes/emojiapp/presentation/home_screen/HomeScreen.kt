@@ -1,4 +1,4 @@
-package com.luanafernandes.emojiapp.presentation.homeScreen
+package com.luanafernandes.emojiapp.presentation.home_screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,8 @@ fun HomeScreen(
     onEmojiListClick: () -> Unit,
     onSearchClick: (String) -> Unit,
     user: User?,
-    onAvatarListClick: () -> Unit
+    onAvatarListClick: () -> Unit,
+    onGoogleReposClick: (String) -> Unit
 ) {
     var randomEmoji by remember { mutableStateOf<Emoji?>(null) }
     var username by remember { mutableStateOf("") }
@@ -113,6 +114,15 @@ fun HomeScreen(
                     contentDescription = null
                 )
             }
+        }
+        Row {
+            Button(
+                onClick = { onGoogleReposClick("google") },
+                modifier = Modifier.padding(20.dp)
+            ) {
+                Text(text = "Google Repos")
+            }
+
         }
     }
 }

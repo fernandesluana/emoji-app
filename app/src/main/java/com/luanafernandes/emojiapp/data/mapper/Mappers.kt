@@ -1,10 +1,12 @@
 package com.luanafernandes.emojiapp.data.mapper
 
-import com.luanafernandes.emojiapp.data.local.EmojiEntity
-import com.luanafernandes.emojiapp.data.local.UserEntity
+import com.luanafernandes.emojiapp.data.local.emoji.EmojiEntity
+import com.luanafernandes.emojiapp.data.local.user.UserEntity
 import com.luanafernandes.emojiapp.data.remote.dto.EmojiDto
+import com.luanafernandes.emojiapp.data.remote.dto.GitHubRepoDto
 import com.luanafernandes.emojiapp.data.remote.dto.UserDto
 import com.luanafernandes.emojiapp.domain.model.Emoji
+import com.luanafernandes.emojiapp.domain.model.GitHubRepo
 import com.luanafernandes.emojiapp.domain.model.User
 
 //Emoji Mappers
@@ -62,4 +64,24 @@ fun userEntityToUser(userEntity: UserEntity) : User {
         id = userEntity.id,
         avatarUrl = userEntity.avatarUrl
     )
+}
+
+//GitHubRepo Mappers
+
+fun repoListDtoToGitHubRepoList(repoDtoList: List<GitHubRepoDto>): List<GitHubRepo> {
+    return repoDtoList.map { repoDto ->
+        GitHubRepo(
+            id = repoDto.id,
+            fullName = repoDto.fullName
+        )
+    }
+}
+
+fun List<GitHubRepoDto>.toGitHubRepoList(): List<GitHubRepo> {
+    return map { repoDto ->
+        GitHubRepo(
+            id = repoDto.id,
+            fullName = repoDto.fullName
+        )
+    }
 }

@@ -1,4 +1,4 @@
-package com.luanafernandes.emojiapp.data.local
+package com.luanafernandes.emojiapp.data.local.emoji
 
 import androidx.room.Dao
 import androidx.room.Insert

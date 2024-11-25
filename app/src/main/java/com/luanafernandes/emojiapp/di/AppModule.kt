@@ -3,7 +3,7 @@ package com.luanafernandes.emojiapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.luanafernandes.emojiapp.data.local.EmojiDao
+import com.luanafernandes.emojiapp.data.local.emoji.EmojiDao
 import com.luanafernandes.emojiapp.data.local.EmojiDatabase
 import com.luanafernandes.emojiapp.data.remote.EmojiApiService
 import com.luanafernandes.emojiapp.data.repository.EmojiRepositoryImpl
@@ -13,6 +13,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -22,6 +23,7 @@ import javax.inject.Singleton
 object AppModule {
 
     private const val BASE_URL = "https://api.github.com/"
+
 
     @Provides
     @Singleton
@@ -46,8 +48,6 @@ object AppModule {
     ): EmojiRepository {
         return EmojiRepositoryImpl(api, database)
     }
-
-    // Database
 
     @Provides
     @Singleton

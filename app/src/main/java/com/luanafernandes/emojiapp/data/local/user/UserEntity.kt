@@ -1,4 +1,4 @@
-package com.luanafernandes.emojiapp.data.local
+package com.luanafernandes.emojiapp.data.local.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
