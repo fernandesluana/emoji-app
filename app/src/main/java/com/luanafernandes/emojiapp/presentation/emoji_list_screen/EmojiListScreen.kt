@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +31,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,17 +60,8 @@ fun EmojiListScreen(
     onRefreshEmojis: () -> Unit
 ) {
     var isRefreshing by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(true) } // Tracks initial loading state
     val coroutineScope = rememberCoroutineScope()
     val state = rememberPullToRefreshState()
-
-    // Simulate loading state for the first time the screen opens
-    LaunchedEffect(emojis) {
-        if (isLoading) {
-            delay(2000) // Simulate loading delay
-            isLoading = false
-        }
-    }
 
     val onRefresh: () -> Unit = {
         isRefreshing = true
@@ -102,15 +90,8 @@ fun EmojiListScreen(
                 .padding(paddingValues),
             contentAlignment = Alignment.Center
         ) {
-            AnimatedVisibility(visible = isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-
-
             AnimatedVisibility(
-                visible = !isLoading,
+                visible = emojis.isNotEmpty(),
                 enter = fadeIn() + slideInVertically(),
                 exit = fadeOut() + slideOutVertically()
             ) {

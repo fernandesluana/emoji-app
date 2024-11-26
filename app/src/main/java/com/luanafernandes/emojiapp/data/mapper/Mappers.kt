@@ -68,15 +68,6 @@ fun userEntityToUser(userEntity: UserEntity) : User {
 
 //GitHubRepo Mappers
 
-fun repoListDtoToGitHubRepoList(repoDtoList: List<GitHubRepoDto>): List<GitHubRepo> {
-    return repoDtoList.map { repoDto ->
-        GitHubRepo(
-            id = repoDto.id,
-            fullName = repoDto.fullName
-        )
-    }
-}
-
 fun List<GitHubRepoDto>.toGitHubRepoList(): List<GitHubRepo> {
     return map { repoDto ->
         GitHubRepo(

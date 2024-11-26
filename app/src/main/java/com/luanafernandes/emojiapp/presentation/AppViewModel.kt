@@ -29,6 +29,9 @@ class AppViewModel @Inject constructor(
     private val _users = MutableStateFlow<List<User>>(emptyList())
     val users: StateFlow<List<User>> get() = _users
 
+    val repos: Flow<PagingData<GitHubRepo>> = repository.getUserRepos()
+        .cachedIn(viewModelScope)
+
     init {
         fetchEmojis()
         fetchUsers()
@@ -87,8 +90,4 @@ class AppViewModel @Inject constructor(
 
         }
     }
-
-    val repos: Flow<PagingData<GitHubRepo>> = repository.getUserRepos()
-        .cachedIn(viewModelScope)
-
 }

@@ -1,6 +1,5 @@
 package com.luanafernandes.emojiapp.data.repository
 
-
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -24,7 +23,7 @@ private const val USERNAME = "google"
 
 class EmojiRepositoryImpl(
     private val api: EmojiApiService,
-    private val database: EmojiDatabase
+    database: EmojiDatabase
 ): EmojiRepository {
 
     private val emojiDao = database.emojiDao()

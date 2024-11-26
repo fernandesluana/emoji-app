@@ -46,7 +46,7 @@ fun HomeScreen(
     onSearchClick: (String) -> Unit,
     user: User?,
     onAvatarListClick: () -> Unit,
-    onGoogleReposClick: (String) -> Unit
+    onGoogleReposClick: () -> Unit
 ) {
     var randomEmoji by remember { mutableStateOf<Emoji?>(null) }
     var username by remember { mutableStateOf("") }
@@ -163,7 +163,7 @@ fun HomeScreen(
                 }
 
                 Button(
-                    onClick = { onGoogleReposClick("google") },
+                    onClick = { onGoogleReposClick() },
                     modifier = Modifier
                         .width(150.dp)
                         .padding(5.dp),
